@@ -11,6 +11,7 @@ import ru.netology.mockito.external.services.weather.Weather;
 import ru.netology.mockito.external.services.weather.WeatherService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +25,7 @@ class AdviceServiceTest {
             .thenReturn(Weather.STORMY);
 
         PreferencesService preferencesService = mock(PreferencesService.class);
-        when(preferencesService.get("user1"))
+        when(preferencesService.get(any()))
             .thenReturn(Set.of(Preference.FOOTBALL, Preference.WATCHING_FILMS, Preference.READING));
 
         AdviceService adviceService = new AdviceService(preferencesService, weatherService);
