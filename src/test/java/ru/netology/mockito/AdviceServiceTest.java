@@ -6,22 +6,26 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 
 import ru.netology.mockito.external.services.preference.Preference;
+import ru.netology.mockito.external.services.preference.PreferencesService;
 import ru.netology.mockito.external.services.weather.Weather;
-import ru.netology.mockito.mocks.PreferencesServiceMock;
-import ru.netology.mockito.mocks.WeatherServiceMock;
+import ru.netology.mockito.external.services.weather.WeatherService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class AdviceServiceTest {
 
     @Test
     @DisplayName("should get advice in bad weather")
     void testGetAdviceInBadWeather() {
-        WeatherServiceMock weatherService = new WeatherServiceMock();
-        weatherService.setValue(Weather.STORMY);
+        WeatherService weatherService = mock(WeatherService.class);
+        when(weatherService.currentWeather())
+            .thenReturn(Weather.STORMY);
 
-        PreferencesServiceMock preferencesService = new PreferencesServiceMock();
-        preferencesService.setValue(Set.of(Preference.FOOTBALL, Preference.WATCHING_FILMS, Preference.READING));
+        PreferencesService preferencesService = mock(PreferencesService.class);
+        when(preferencesService.get("user1"))
+            .thenReturn(Set.of(Preference.FOOTBALL, Preference.WATCHING_FILMS, Preference.READING));
 
         AdviceService adviceService = new AdviceService(preferencesService, weatherService);
         Set<Preference> preferences = adviceService.getAdvice("user1");
